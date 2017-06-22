@@ -71,27 +71,30 @@ function raceCodes(combo1, combo2, times) {
   const cardArray = cardsArrayMinusBlockers(blockers)
   const cardArrayLen = cardArray.length
 
-  let win1 = 0
-  let win2 = 0
+  var win1 = 0
+  var win2 = 0
+  var tie = 0
   for (let i = 0; i < times; i++) {
     const res = compareTwo(combo1First, combo1Second, combo2First, combo2Second, cardArray, cardArrayLen)
-    if (res === 0) { win1++; win2++ }
+    if (res === 0) tie++
     if (res < 0) win1++; else win2++
   }
 
-  return { win1, win2 }
+  return { win1, win2, tie }
 }
 
 function raceRangeCodes(combo1, range, times) {
-  let winCombo = 0
-  let winRange = 0
+  var winCombo = 0
+  var winRange = 0
+  var tieBoth = 0
   for (let ci = 0; ci < range.length; ci++) {
     const combo2 = range[ci]
-    const { win1, win2 } = raceCodes(combo1, combo2, times)
+    const { win1, win2, tie } = raceCodes(combo1, combo2, times)
     winCombo += win1
     winRange += win2
+    tieBoth += tie
   }
-  return { win1: winCombo, win2: winRange }
+  return { win1: winCombo, win2: winRange, tie: tieBoth }
 }
 
 function raceCombos(combo1, combo2, times) {
@@ -106,8 +109,12 @@ function raceRange(combo, range, times) {
   return raceRangeCodes(comboCodes, rangeCodes, times)
 }
 
-function winRate({ win1, win2 }) {
-  return Math.round((win1 / (win1 + win2) * 100 * 100)) / 100
+function rates({ win1, win2, tie }) {
+  const total = win1 + win2 + tie
+  const win = Math.round(win1 / total * 100 * 100) / 100
+  const loose = Math.round(win2 / total * 100 * 100) / 100
+  const tiePerc = Math.round(tie / total * 100 * 100) / 100
+  return { win, loose, tie: tiePerc }
 }
 
 module.exports = {
@@ -115,5 +122,5 @@ module.exports = {
   , raceRangeCodes
   , raceCombos
   , raceRange
-  , winRate
+  , rates
 }

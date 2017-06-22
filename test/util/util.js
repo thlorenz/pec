@@ -1,8 +1,8 @@
-const { raceCombos, winRate } = require('../../')
+const { raceCombos, raceRange, rates } = require('../../')
 const prange = require('prange')
 const { detailRange } = require('pdetail')
 
-// 10000 iterations seems minimum to get somewhat reliable results
+// 10,000 iterations seems minimum to get somewhat reliable results
 // Still we use maxDeviation to keep tests from failing too often
 const ITER = 1E4
 
@@ -23,18 +23,29 @@ function raceSingle(combo1, combo2, times) {
   const arr1 = arryifyCombo(combo1)
   const arr2 = arryifyCombo(combo2)
   const res = raceCombos(arr1, arr2, times)
-  return winRate(res)
+  return rates(res)
 }
 
 function checkSingle(t, combo1, combo2, expectedWinRate, maxDeviation = 4, times = ITER) {
-  const winRate = raceSingle(combo1, combo2, times)
-  const msg = `${combo1} wins ${expectedWinRate}% vs.${combo2}, actual ${winRate}%`
-  const pass = expectedWinRate - maxDeviation < winRate && winRate < expectedWinRate + maxDeviation
+  const { win, loose, tie } = raceSingle(combo1, combo2, times)
+  const msg = `${combo1} wins ${expectedWinRate}% vs.${combo2}, actual ${win}% vs ${loose}%, tie: ${tie}%`
+  const pass = expectedWinRate - maxDeviation < win && win < expectedWinRate + maxDeviation
   t.ok(pass, msg)
 }
 
-module.exports = {
-    raceSingle
-  , checkSingle
-  , expandRange
+function raceComboVsRange(combo, range, times) {
+  const arr = arryifyCombo(combo)
+  const expanded = expandRange(range)
+  const res = raceRange(arr, expanded, times)
+  return rates(res)
 }
+
+function checkRange(t, combo, range, expectedWin, expectedLoose, maxDeviation = 4, times = ITER) {
+  const { win, loose, tie } = raceComboVsRange(combo, range, times)
+  const msg = `${combo} wins ${expectedWin}% and looses ${expectedLoose}% vs.${range}, actual ${win}% vs ${loose}%, tie: ${tie}`
+  const pass = expectedWin - maxDeviation < win && win < expectedWin + maxDeviation &&
+               expectedLoose - maxDeviation < loose && loose < expectedLoose + maxDeviation
+  t.ok(pass, msg)
+}
+
+module.exports = { checkSingle, checkRange }
