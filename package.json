@@ -1,0 +1,36 @@
+{
+  "name": "pec",
+  "version": "0.0.0",
+  "description": "BetterPoker equity calculator. Compares two combos or one combo against a range.",
+  "main": "pec.js",
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do node $t; done"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thlorenz/pec.git"
+  },
+  "homepage": "https://github.com/thlorenz/pec",
+  "dependencies": {
+    "phe": "~0.3.1"
+  },
+  "devDependencies": {
+    "pdetail": "~0.3.0",
+    "prange": "~0.2.2",
+    "pretty-hrtime": "~1.0.3",
+    "tape": "~4.6.3"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Thorsten Lorenz",
+    "email": "thlorenz@gmx.de",
+    "url": "http://thlorenz.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/thlorenz/pec/blob/master/LICENSE"
+  },
+  "engine": {
+    "node": ">=0.10"
+  }
+}
