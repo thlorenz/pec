@@ -27,7 +27,7 @@ function raceSingle(combo1, combo2, times) {
 }
 
 function checkSingle(t, combo1, combo2, expectedWinRate, maxDeviation = 4, times = ITER) {
-  const { win, loose, tie } = raceSingle(combo1, combo2, times)
+  const { winRate: win, looseRate: loose, tieRate: tie } = raceSingle(combo1, combo2, times)
   const msg = `${combo1} wins ${expectedWinRate}% vs.${combo2}, actual ${win}% vs ${loose}%, tie: ${tie}%`
   const pass = expectedWinRate - maxDeviation < win && win < expectedWinRate + maxDeviation
   t.ok(pass, msg)
@@ -41,11 +41,11 @@ function raceComboVsRange(combo, range, times) {
 }
 
 function checkRange(t, combo, range, expectedWin, expectedLoose, maxDeviation = 4, times = ITER) {
-  const { win, loose, tie } = raceComboVsRange(combo, range, times)
+  const { winRate: win, looseRate: loose, tieRate: tie } = raceComboVsRange(combo, range, times)
   const msg = `${combo} wins ${expectedWin}% and looses ${expectedLoose}% vs ${range}, actual ${win}% vs ${loose}%, tie: ${tie}`
   const pass = expectedWin - maxDeviation < win && win < expectedWin + maxDeviation &&
                expectedLoose - maxDeviation < loose && loose < expectedLoose + maxDeviation
   t.ok(pass, msg)
 }
 
-module.exports = { checkSingle, checkRange }
+module.exports = { checkSingle, checkRange, expandRange, arryifyCombo }

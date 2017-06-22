@@ -4,7 +4,8 @@
   "description": "BetterPoker equity calculator. Compares two combos or one combo against a range.",
   "main": "pec.js",
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done"
+    "test": "set -e; for t in test/*.js; do node $t; done",
+    "demo": "budo ./examples/webworker.js"
   },
   "repository": {
     "type": "git",
@@ -12,9 +13,11 @@
   },
   "homepage": "https://github.com/thlorenz/pec",
   "dependencies": {
-    "phe": "~0.3.1"
+    "phe": "~0.3.1",
+    "webworkify": "~1.4.0"
   },
   "devDependencies": {
+    "budo": "~10.0.3",
     "pdetail": "~0.3.0",
     "prange": "~0.2.2",
     "pretty-hrtime": "~1.0.3",
