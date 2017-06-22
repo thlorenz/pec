@@ -42,7 +42,7 @@ function raceComboVsRange(combo, range, times) {
 
 function checkRange(t, combo, range, expectedWin, expectedLoose, maxDeviation = 4, times = ITER) {
   const { win, loose, tie } = raceComboVsRange(combo, range, times)
-  const msg = `${combo} wins ${expectedWin}% and looses ${expectedLoose}% vs.${range}, actual ${win}% vs ${loose}%, tie: ${tie}`
+  const msg = `${combo} wins ${expectedWin}% and looses ${expectedLoose}% vs ${range}, actual ${win}% vs ${loose}%, tie: ${tie}`
   const pass = expectedWin - maxDeviation < win && win < expectedWin + maxDeviation &&
                expectedLoose - maxDeviation < loose && loose < expectedLoose + maxDeviation
   t.ok(pass, msg)
