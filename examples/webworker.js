@@ -1,8 +1,8 @@
 const { rates } = require('../')
-const BackgroundWorker = require('../pec.background')
+const backgroundWorker = require('../pec.background')
 const { expandRange, arryifyCombo } = require('../test/util/util')
 
-const worker = new BackgroundWorker(onupdate)
+const worker = backgroundWorker(onupdate)
 
 const range = 'TT+, AK+, AQs+'
 const combo = 'JhJs'
