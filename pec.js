@@ -64,6 +64,10 @@ function compareTwo(combo1First, combo1Second, combo2First, combo2Second, cardAr
   )
 }
 
+/**
+ * Same as @see raceCombos, except that the combo cards are given
+ * as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
+ */
 function raceCodes(combo1, combo2, times) {
   const [ combo1First, combo1Second ] = combo1
   const [ combo2First, combo2Second ] = combo2
@@ -83,6 +87,10 @@ function raceCodes(combo1, combo2, times) {
   return { win, loose, tie }
 }
 
+/**
+ * Same as @see raceRange, except that the combo and range cards are given
+ * as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
+ */
 function raceRangeCodes(combo1, range, times) {
   var winCombo = 0
   var winRange = 0
@@ -97,18 +105,50 @@ function raceRangeCodes(combo1, range, times) {
   return { win: winCombo, loose: winRange, tie: tieBoth }
 }
 
+/**
+ * Races two combos against each other.
+ *
+ * @name raceCombos
+ * @function
+ * @param {Array.<string>} combo1 first combo to race i.e. `[ 'As', 'Ad' ]`
+ * @param {Array.<string>} combo2 second combo to race i.e. `[ 'As', 'Ad' ]`
+ * @param {Number} times the number of times to race
+ * @return count of how many times combo1 wins, looses or ties, i.e. `{ win, loose, tie }`
+ */
 function raceCombos(combo1, combo2, times) {
   const comboCodes1 = cardCodes(combo1)
   const comboCodes2 = cardCodes(combo2)
   return raceCodes(comboCodes1, comboCodes2, times)
 }
 
+/**
+ * Race the given combo vs. the given combo to count number of wins, losses and ties.
+ *
+ * @name raceRange
+ * @function
+ * @param {Array.<string>} combo to race i.e. `[ 'As', 'Ad' ]`
+ * @param {Array.<Array.<string>> range multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
+ * @param {Number} times the number of times to race
+ * @return count of how many times the combo wins, looses or ties, i.e. `{ win, loose, tie }`
+ */
 function raceRange(combo, range, times) {
   const comboCodes = cardCodes(combo)
   const rangeCodes = range.map(cardCodes)
   return raceRangeCodes(comboCodes, rangeCodes, times)
 }
 
+/**
+ * Given win, loose and tie count it converts those to winning rates
+ * in percent.
+ *
+ * @name rates
+ * @function
+ * @param {Object} $0
+ * @param {Number} $0.win number of wins
+ * @param {Number} $0.loose number of losses
+ * @param {Number} $0.tie number of ties
+ * @return {Object} win rates `{ winRate, looseRate, tieRate }
+ */
 function rates({ win, loose, tie }) {
   const total = win + loose + tie
   const winRate = Math.round(win / total * 100 * 100) / 100
