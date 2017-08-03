@@ -4,9 +4,9 @@ const evaluate7Cards = require('phe/lib/evaluator7')
 const ranks = [ 'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2' ]
 const suits = [ 'h', 's', 'd', 'c' ]
 
-let allCardCodes = new Set()
-for (let ri = 0; ri < ranks.length; ri++) {
-  for (let si = 0; si < suits.length; si++) {
+var allCardCodes = new Set()
+for (var ri = 0; ri < ranks.length; ri++) {
+  for (var si = 0; si < suits.length; si++) {
     allCardCodes.add(cardCode(ranks[ri], suits[si]))
   }
 }
@@ -78,7 +78,7 @@ function raceCodes(combo1, combo2, times) {
   var win = 0
   var loose = 0
   var tie = 0
-  for (let i = 0; i < times; i++) {
+  for (var i = 0; i < times; i++) {
     const res = compareTwo(combo1First, combo1Second, combo2First, combo2Second, cardArray, cardArrayLen)
     if (res === 0) tie++
     if (res < 0) win++; else loose++
@@ -95,7 +95,7 @@ function raceRangeCodes(combo1, range, times) {
   var winCombo = 0
   var winRange = 0
   var tieBoth = 0
-  for (let ci = 0; ci < range.length; ci++) {
+  for (var ci = 0; ci < range.length; ci++) {
     const combo2 = range[ci]
     const { win, loose, tie } = raceCodes(combo1, combo2, times)
     winCombo += win
