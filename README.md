@@ -92,7 +92,7 @@ Races two combos against each other.
 
 -   `combo1` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** first combo to race i.e. `[ 'As', 'Ad' ]`
 -   `combo2` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** second combo to race i.e. `[ 'As', 'Ad' ]`
--   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of times to race
+-   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the number of times to race, if not supplied combos are races against all possible boards (optional, default `null`)
 
 Returns **any** count of how many times combo1 wins, looses or ties, i.e. `{ win, loose, tie }`
 
@@ -103,7 +103,7 @@ Race the given combo vs. the given combo to count number of wins, losses and tie
 **Parameters**
 
 -   `combo` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** to race i.e. `[ 'As', 'Ad' ]`
--   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of times to race
+-   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the number of times to race, if not supplied combos are races against all possible boards (optional, default `null`)
 
 Returns **any** count of how many times the combo wins, looses or ties, i.e. `{ win, loose, tie }`
 
