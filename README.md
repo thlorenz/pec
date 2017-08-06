@@ -3,7 +3,7 @@
 Poker equity calculator. Compares two combos or one combo against a range to compute winning equity.
 
 ```js
-const { raceRange, rates } = require('../')
+const { raceRange, rates } = require('pec')
 
 const combo = [ 'Jh', 'Js' ]
 const range = [
@@ -23,9 +23,9 @@ console.log('tie: %d%% (%d times)', tieRate, tie)
 ```
 
     JJ performs as follows vs. [ KK, QQ ]
-    win: 17.87% (21537 times)
-    loose: 81.68% (98463 times)
-    tie: 0.45% (542 times)
+    win: 18.13% (21750 times)
+    loose: 81.43% (97718 times)
+    tie: 0.44% (532 times)
 
 For more examples see the [tests](test/pec.single.js) and the [webworker example](examples/webworker.js).
 
@@ -69,9 +69,9 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`  
--   `combo2`  
--   `times`  
+-   `combo1`
+-   `combo2`
+-   `times`
 
 ### raceRangeCodes
 
@@ -80,9 +80,9 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`  
--   `range`  
--   `times`  
+-   `combo1`
+-   `range`
+-   `times`
 
 ### raceCombos
 
@@ -114,7 +114,7 @@ in percent.
 
 **Parameters**
 
--   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)**
     -   `$0.win` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of wins
     -   `$0.loose` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of losses
     -   `$0.tie` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of ties
