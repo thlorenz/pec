@@ -110,4 +110,3 @@ test('\npreflop:single: high vs. matched high and low', function(t) {
   ].forEach(x => checkSingle.apply(null, [ t ].concat(x)))
   t.end()
 })
-

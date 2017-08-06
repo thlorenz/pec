@@ -33,6 +33,13 @@ function checkSingle(t, combo1, combo2, expectedWinRate, maxDeviation = 4, times
   t.ok(pass, msg)
 }
 
+function checkSingleAll(t, combo1, combo2, expectedWinRate, maxDeviation = 4) {
+  const { winRate: win, looseRate: loose, tieRate: tie } = raceSingle(combo1, combo2, null)
+  const msg = `${combo1} wins ${expectedWinRate}% vs.${combo2}, actual ${win}% vs ${loose}%, tie: ${tie}%`
+  const pass = expectedWinRate - maxDeviation < win && win < expectedWinRate + maxDeviation
+  t.ok(pass, msg)
+}
+
 function raceComboVsRange(combo, range, times) {
   const arr = arryifyCombo(combo)
   const expanded = expandRange(range)
@@ -48,4 +55,12 @@ function checkRange(t, combo, range, expectedWin, expectedLoose, maxDeviation = 
   t.ok(pass, msg)
 }
 
-module.exports = { checkSingle, checkRange, expandRange, arryifyCombo }
+function checkRangeAll(t, combo, range, expectedWin, expectedLoose, maxDeviation = 4) {
+  const { winRate: win, looseRate: loose, tieRate: tie } = raceComboVsRange(combo, range, null)
+  const msg = `${combo} wins ${expectedWin}% and looses ${expectedLoose}% vs ${range}, actual ${win}% vs ${loose}%, tie: ${tie}`
+  const pass = expectedWin - maxDeviation < win && win < expectedWin + maxDeviation &&
+               expectedLoose - maxDeviation < loose && loose < expectedLoose + maxDeviation
+  t.ok(pass, msg)
+}
+
+module.exports = { checkSingle, checkSingleAll, checkRange, checkRangeAll, expandRange, arryifyCombo }
