@@ -70,7 +70,8 @@ function raceCodesAll(combo1, combo2) {
       boards[b], boards[b + 1], boards[b + 2], boards[b + 3], boards[b + 4])
 
     if (res === 0) tie++
-    if (res < 0) win++; else loose++
+    else if (res < 0) win++
+    else loose++
   }
 
   return { win, loose, tie }
@@ -92,7 +93,8 @@ function raceCodesRandom(combo1, combo2, times) {
     const board = randomBoard(cardArray, cardArrayLen)
     const res = compareTwoWithBoard(combo1First, combo1Second, combo2First, combo2Second, board)
     if (res === 0) tie++
-    if (res < 0) win++; else loose++
+    else if (res < 0) win++
+    else loose++
   }
 
   return { win, loose, tie }
