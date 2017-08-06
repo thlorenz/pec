@@ -9,19 +9,26 @@ class Worker {
   }
 
   _onmessage(e) {
-    const { stop = false, combo, range, times, repeat } = JSON.parse(e.data)
+    const { stop = false, combo, range, runAll, times, repeat } = JSON.parse(e.data)
     this._stopped = stop
     if (stop) return
 
     this._combo = combo
     this._range = range
-    this._times = times
-    this._repeat = repeat
     this._win = 0
     this._loose = 0
     this._tie = 0
 
+    if (runAll) return this._runAll()
+
+    this._times = times
+    this._repeat = repeat
     this._run()
+  }
+
+  _runAll() {
+    const { win, loose, tie } = raceRange(this._combo, this._range, null)
+    this._hub.postMessage([ win, loose, tie, 1 ])
   }
 
   _run() {

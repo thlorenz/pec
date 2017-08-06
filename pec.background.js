@@ -22,11 +22,16 @@ class BackgroundWorker {
   */
   raceRange(combo, range, total) {
     this._stopped = false
-    // let's do 100 at a time to come back with at least some result quickly
-    // progress communication is a simple array with 3 elements which shouldn't add too much overload
-    const times = Math.min(total, 100)
-    const repeat = Math.round(total / times)
-    this._worker.postMessage(JSON.stringify({ combo, range, times, repeat }))
+    const runAll = total == null
+    if (runAll) {
+      this._worker.postMessage(JSON.stringify({ combo, range, runAll }))
+    } else {
+      // let's do 100 at a time to come back with at least some result quickly
+      // progress communication is a simple array with 3 elements which shouldn't add too much overload
+      const times =  Math.min(total, 100)
+      const repeat = Math.round(total / times)
+      this._worker.postMessage(JSON.stringify({ combo, range, runAll: false, times, repeat }))
+    }
   }
 
   /**
