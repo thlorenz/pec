@@ -1,61 +1,61 @@
 const { raceRange } = require('./')
 
-class Worker {
-  constructor(hub) {
-    this._stopped = false
-    this._onmessage = this._onmessage.bind(this)
-    this._hub = hub
-    this._hub.addEventListener('message', this._onmessage)
+function Worker(hub) {
+  this._stopped = false
+  this._onmessage = this._onmessage.bind(this)
+  this._hub = hub
+  this._hub.addEventListener('message', this._onmessage)
+}
+
+const proto = Worker.prototype
+
+proto._onmessage = function _onmessage(e) {
+  const { stop = false, combo, range, runAll, times, repeat } = JSON.parse(e.data)
+  this._stopped = stop
+  if (stop) return
+
+  this._combo = combo
+  this._range = range
+  this._win = 0
+  this._loose = 0
+  this._tie = 0
+
+  if (runAll) return this._runAll()
+
+  this._times = times
+  this._repeat = repeat
+  this._run()
+}
+
+proto._runAll = function _runAll() {
+  const { win, loose, tie } = raceRange(this._combo, this._range, null)
+  this._hub.postMessage([ win, loose, tie, 1 ])
+}
+
+proto._run = function _run() {
+  const self = this
+  const combo = this._combo
+  const range = this._range
+  var i = 0
+  function dorun() {
+    const { win, loose, tie } = raceRange(combo, range, self._times)
+    // Did we get a new request and are handling that currently?
+    // If so cancel (forget about) the current one.
+    // Also if we got stopped entirely we are done.
+    if (self._stopped || combo !== self._combo || range !== self._range) return
+
+    // Otherwise update the data and send it up
+    self._win += win
+    self._loose += loose
+    self._tie += tie
+
+    self._hub.postMessage([ self._win, self._loose, self._tie, i * self._times ])
+
+    // give messages a chance to process, so we can be stopped and/or
+    // get a new task to do
+    if (i++ <= self._repeat) setTimeout(dorun, 0)
   }
-
-  _onmessage(e) {
-    const { stop = false, combo, range, runAll, times, repeat } = JSON.parse(e.data)
-    this._stopped = stop
-    if (stop) return
-
-    this._combo = combo
-    this._range = range
-    this._win = 0
-    this._loose = 0
-    this._tie = 0
-
-    if (runAll) return this._runAll()
-
-    this._times = times
-    this._repeat = repeat
-    this._run()
-  }
-
-  _runAll() {
-    const { win, loose, tie } = raceRange(this._combo, this._range, null)
-    this._hub.postMessage([ win, loose, tie, 1 ])
-  }
-
-  _run() {
-    const self = this
-    const combo = this._combo
-    const range = this._range
-    var i = 0
-    function dorun() {
-      const { win, loose, tie } = raceRange(combo, range, self._times)
-      // Did we get a new request and are handling that currently?
-      // If so cancel (forget about) the current one.
-      // Also if we got stopped entirely we are done.
-      if (self._stopped || combo !== self._combo || range !== self._range) return
-
-      // Otherwise update the data and send it up
-      self._win += win
-      self._loose += loose
-      self._tie += tie
-
-      self._hub.postMessage([ self._win, self._loose, self._tie, i * self._times ])
-
-      // give messages a chance to process, so we can be stopped and/or
-      // get a new task to do
-      if (i++ <= self._repeat) setTimeout(dorun, 0)
-    }
-    dorun()
-  }
+  dorun()
 }
 
 module.exports = function create(hub) {

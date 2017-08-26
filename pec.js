@@ -78,8 +78,11 @@ function raceCodesAll(combo1, combo2) {
 }
 
 function raceCodesRandom(combo1, combo2, times) {
-  const [ combo1First, combo1Second ] = combo1
-  const [ combo2First, combo2Second ] = combo2
+  const combo1First  = combo1[0]
+  const combo1Second = combo1[1]
+  const combo2First  = combo2[0]
+  const combo2Second = combo2[1]
+
   const blockers = new Set([ combo1First, combo1Second, combo2First, combo2Second ])
 
   const cardArray = cardsArrayMinusBlockers(blockers)
