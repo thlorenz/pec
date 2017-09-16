@@ -40,15 +40,19 @@ function checkSingleAll(t, combo1, combo2, expectedWinRate, maxDeviation = 4) {
   t.ok(pass, msg)
 }
 
-function raceComboVsRange(combo, range, times) {
+function raceComboVsRange(combo, range, times, trackCombos) {
   const arr = arryifyCombo(combo)
   const expanded = expandRange(range)
-  const res = raceRange(arr, expanded, times)
+  return raceRange(arr, expanded, times, trackCombos)
+}
+
+function rateComboVsRange(combo, range, times, trackCombos) {
+  const res = raceComboVsRange(combo, range, times, trackCombos)
   return rates(res)
 }
 
 function checkRange(t, combo, range, expectedWin, expectedLoose, maxDeviation = 4, times = ITER) {
-  const { winRate: win, looseRate: loose, tieRate: tie } = raceComboVsRange(combo, range, times)
+  const { winRate: win, looseRate: loose, tieRate: tie } = rateComboVsRange(combo, range, times)
   const msg = `${combo} wins ${expectedWin}% and looses ${expectedLoose}% vs ${range}, actual ${win}% vs ${loose}%, tie: ${tie}`
   const pass = expectedWin - maxDeviation < win && win < expectedWin + maxDeviation &&
                expectedLoose - maxDeviation < loose && loose < expectedLoose + maxDeviation
@@ -56,11 +60,20 @@ function checkRange(t, combo, range, expectedWin, expectedLoose, maxDeviation = 
 }
 
 function checkRangeAll(t, combo, range, expectedWin, expectedLoose, maxDeviation = 4) {
-  const { winRate: win, looseRate: loose, tieRate: tie } = raceComboVsRange(combo, range, null)
+  const { winRate: win, looseRate: loose, tieRate: tie } = rateComboVsRange(combo, range, null)
   const msg = `${combo} wins ${expectedWin}% and looses ${expectedLoose}% vs ${range}, actual ${win}% vs ${loose}%, tie: ${tie}`
   const pass = expectedWin - maxDeviation < win && win < expectedWin + maxDeviation &&
                expectedLoose - maxDeviation < loose && loose < expectedLoose + maxDeviation
   t.ok(pass, msg)
 }
 
-module.exports = { checkSingle, checkSingleAll, checkRange, checkRangeAll, expandRange, arryifyCombo }
+module.exports = {
+    checkSingle
+  , checkSingleAll
+  , checkRange
+  , checkRangeAll
+  , expandRange
+  , arryifyCombo
+  , raceComboVsRange
+  , rateComboVsRange
+}

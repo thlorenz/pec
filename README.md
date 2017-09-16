@@ -69,9 +69,9 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`
--   `combo2`
--   `times`
+-   `combo1`  
+-   `combo2`  
+-   `times`  
 
 ### raceRangeCodes
 
@@ -80,9 +80,10 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`
--   `range`
--   `times`
+-   `combo1`  
+-   `range`  
+-   `times`  
+-   `trackCombos`  
 
 ### raceCombos
 
@@ -104,6 +105,7 @@ Race the given combo vs. the given combo to count number of wins, losses and tie
 
 -   `combo` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** to race i.e. `[ 'As', 'Ad' ]`
 -   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the number of times to race, if not supplied combos are races against all possible boards (optional, default `null`)
+-   `trackCombos` **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** if `true` the counts for each combos are tracked (optional, default `false`)
 
 Returns **any** count of how many times the combo wins, looses or ties, i.e. `{ win, loose, tie }`
 
@@ -114,12 +116,14 @@ in percent.
 
 **Parameters**
 
--   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)**
+-   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `$0.win` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of wins
     -   `$0.loose` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of losses
     -   `$0.tie` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of ties
+    -   `$0.combos` **[Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)&lt;[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)>?** map of counts per combo,
+        if given their rates are calculated as well (optional, default `null`)
 
-Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** win rates \`{ winRate, looseRate, tieRate }
+Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** win rates \`{ winRate, looseRate, tieRate, combos? }
 
 ## License
 

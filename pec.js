@@ -1,8 +1,18 @@
-const { cardCodes } = require('phe')
+const { cardCodes, stringifyCardCode } = require('phe')
 const evaluate7Cards = require('phe/lib/evaluator7')
 
 const { allPossibleFullBoardCodes } = require('./lib/board')
 const { cardsArrayMinusBlockers } = require('./lib/common')
+
+function stringifyTrackedCardComboKeys(codedMap) {
+  const map = new Map()
+  for (const [ k, v ] of codedMap) {
+    const s1 = stringifyCardCode(k[0])
+    const s2 = stringifyCardCode(k[1])
+    map.set(s1 + s2, v)
+  }
+  return map
+}
 
 function compareTwoWithBoardExpanded(combo1First, combo1Second, combo2First, combo2Second, b1, b2, b3, b4, b5) {
   const strength1 = evaluate7Cards(b1, b2, b3, b4, b5, combo1First, combo1Second)
@@ -115,18 +125,23 @@ function raceCodes(combo1, combo2, times) {
  * Same as @see raceRange, except that the combo and range cards are given
  * as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
  */
-function raceRangeCodes(combo1, range, times) {
+function raceRangeCodes(combo1, range, times, trackCombos) {
   var winCombo = 0
   var winRange = 0
   var tieBoth = 0
+  trackCombos = !!trackCombos
+  const comboCodeMap = trackCombos ? new Map() : null
   for (var ci = 0; ci < range.length; ci++) {
     const combo2 = range[ci]
     const { win, loose, tie } = raceCodes(combo1, combo2, times)
+    if (trackCombos) comboCodeMap.set(combo2, { win, loose, tie })
     winCombo += win
     winRange += loose
     tieBoth += tie
   }
-  return { win: winCombo, loose: winRange, tie: tieBoth }
+  const res = { win: winCombo, loose: winRange, tie: tieBoth }
+  if (trackCombos) res.combos = comboCodeMap
+  return res
 }
 
 /**
@@ -153,12 +168,15 @@ function raceCombos(combo1, combo2, times) {
  * @param {Array.<string>} combo to race i.e. `[ 'As', 'Ad' ]`
  * @param {Array.<Array.<string>> range multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
  * @param {Number} [times=null] the number of times to race, if not supplied combos are races against all possible boards
+ * @param {Boolean} [trackCombos=false] if `true` the counts for each combos are tracked
  * @return count of how many times the combo wins, looses or ties, i.e. `{ win, loose, tie }`
  */
-function raceRange(combo, range, times) {
+function raceRange(combo, range, times, trackCombos) {
   const comboCodes = cardCodes(combo)
   const rangeCodes = range.map(cardCodes)
-  return raceRangeCodes(comboCodes, rangeCodes, times)
+  const res = raceRangeCodes(comboCodes, rangeCodes, times, trackCombos)
+  if (trackCombos) res.combos = stringifyTrackedCardComboKeys(res.combos)
+  return res
 }
 
 /**
@@ -171,14 +189,21 @@ function raceRange(combo, range, times) {
  * @param {Number} $0.win number of wins
  * @param {Number} $0.loose number of losses
  * @param {Number} $0.tie number of ties
- * @return {Object} win rates `{ winRate, looseRate, tieRate }
+ * @param {Map.<String, Number>} [$0.combos=null] map of counts per combo,
+ * if given their rates are calculated as well
+ * @return {Object} win rates `{ winRate, looseRate, tieRate, combos? }
  */
-function rates({ win, loose, tie }) {
+function rates({ win, loose, tie, combos }) {
   const total = win + loose + tie
   const winRate = Math.round(win / total * 100 * 100) / 100
   const looseRate = Math.round(loose / total * 100 * 100) / 100
   const tieRate = Math.round(tie / total * 100 * 100) / 100
-  return { winRate, looseRate, tieRate }
+
+  if (combos == null) return { winRate, looseRate, tieRate }
+
+  const map = new Map()
+  for (const [ k, v ] of combos) map.set(k, rates(v))
+  return { winRate, looseRate, tieRate, combos: map }
 }
 
 module.exports = {
