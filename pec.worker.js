@@ -1,5 +1,17 @@
 const { raceRange } = require('./')
 
+function createMessage(win, loose, tie, iterations, combos, trackCombos) {
+  // prefer numeric array message when possible
+  if (!trackCombos) return [ win, loose, tie, iterations ]
+  return {
+      win: win
+    , loose: loose
+    , tie: tie
+    , iterations
+    , combos: Array.from(combos)
+  }
+}
+
 function Worker(hub) {
   this._stopped = false
   this._onmessage = this._onmessage.bind(this)
@@ -10,17 +22,20 @@ function Worker(hub) {
 const proto = Worker.prototype
 
 proto._onmessage = function _onmessage(e) {
-  const { stop = false, combo, range, runAll, times, repeat } = JSON.parse(e.data)
+  const { stop = false, combo, range, runAll, times, repeat, trackCombos } = JSON.parse(e.data)
   this._stopped = stop
   if (stop) return
 
   this._combo = combo
   this._range = range
+  this._trackCombos = trackCombos
+
+  if (runAll) return this._runAll()
+
   this._win = 0
   this._loose = 0
   this._tie = 0
-
-  if (runAll) return this._runAll()
+  if (trackCombos) this._combos = new Map()
 
   this._times = times
   this._repeat = repeat
@@ -28,8 +43,20 @@ proto._onmessage = function _onmessage(e) {
 }
 
 proto._runAll = function _runAll() {
-  const { win, loose, tie } = raceRange(this._combo, this._range, null)
-  this._hub.postMessage([ win, loose, tie, 1 ])
+  const { win, loose, tie, combos } =
+    raceRange(this._combo, this._range, null, this._trackCombos)
+  const msg = createMessage(win, loose, tie, 1, combos, this._trackCombos)
+  this._hub.postMessage(msg)
+}
+
+proto._updateCombos = function _updateCombos(combos) {
+  for (const [ k, v ] of combos) {
+    if (!this._combos.has(k)) this._combos.set(k, { win: 0, loose: 0, tie: 0 })
+    const val = this._combos.get(k)
+    val.win += v.win
+    val.loose += v.loose
+    val.tie += v.tie
+  }
 }
 
 proto._run = function _run() {
@@ -38,7 +65,7 @@ proto._run = function _run() {
   const range = this._range
   var i = 0
   function dorun() {
-    const { win, loose, tie } = raceRange(combo, range, self._times)
+    const { win, loose, tie, combos } = raceRange(combo, range, self._times, self._trackCombos)
     // Did we get a new request and are handling that currently?
     // If so cancel (forget about) the current one.
     // Also if we got stopped entirely we are done.
@@ -48,8 +75,17 @@ proto._run = function _run() {
     self._win += win
     self._loose += loose
     self._tie += tie
+    if (self._trackCombos) self._updateCombos(combos)
 
-    self._hub.postMessage([ self._win, self._loose, self._tie, i * self._times ])
+    const msg = createMessage(
+        self._win
+      , self._loose
+      , self._tie
+      , i * self._times
+      , self._combos
+      , self._trackCombos
+    )
+    self._hub.postMessage(msg)
 
     // give messages a chance to process, so we can be stopped and/or
     // get a new task to do

@@ -2,6 +2,15 @@ const work = require('webworkify')
 const workerBlob = require('./pec.worker')
 const stopMsg = JSON.stringify({ stop: true })
 
+function readMessage(msg, trackCombos) {
+  if (!trackCombos) {
+    const [ win, loose, tie, iterations ] = msg
+    return { win, loose, tie, iterations }
+  }
+  const { win, loose, tie, iterations, combos } = msg
+  return { win, loose, tie, iterations, combos: new Map(combos) }
+}
+
 class BackgroundWorker {
   constructor(update) {
     this._update = update
@@ -19,8 +28,10 @@ class BackgroundWorker {
   * @param {Array.<Array.<string>> range multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
   * @param {Number} total the total number of times to race, `100` are processed
   * each time and `update` invoked until the `total` is reached
+ * @param {Boolean} [trackCombos=false] if `true` the counts for each combos are tracked
   */
-  raceRange(combo, range, total) {
+  raceRange(combo, range, total, trackCombos) {
+    this._trackCombos = !!trackCombos
     this._stopped = false
     const runAll = total == null
     if (runAll) {
@@ -30,7 +41,9 @@ class BackgroundWorker {
       // progress communication is a simple array with 3 elements which shouldn't add too much overload
       const times =  Math.min(total, 100)
       const repeat = Math.round(total / times)
-      this._worker.postMessage(JSON.stringify({ combo, range, runAll: false, times, repeat }))
+      this._worker.postMessage(
+        JSON.stringify({ combo, range, runAll: false, times, repeat, trackCombos: this._trackCombos })
+      )
     }
   }
 
@@ -48,8 +61,8 @@ class BackgroundWorker {
 
   _onresult(e) {
     if (this._stopped) return
-    const [ win, loose, tie, iterations ] = e.data
-    this._update({ win, loose, tie, iterations })
+    const res = readMessage(e.data, this._trackCombos)
+    this._update(res)
   }
 }
 

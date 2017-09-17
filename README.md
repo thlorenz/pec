@@ -46,6 +46,7 @@ You can launch the web worker via `npm install && npm run demo`.
 -   `combo` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** to race i.e. `[ 'As', 'Ad' ]`
 -   `total` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the total number of times to race, `100` are processed
     each time and `update` invoked until the `total` is reached
+-   `trackCombos` **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** if `true` the counts for each combos are tracked (optional, default `false`)
 
 ### BackgroundWorker.stop
 
