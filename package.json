@@ -18,9 +18,11 @@
   },
   "devDependencies": {
     "budo": "~10.0.3",
+    "ocat": "~0.1.0",
     "pdetail": "~0.3.0",
     "prange": "~0.2.2",
     "pretty-hrtime": "~1.0.3",
+    "spok": "~0.8.1",
     "tape": "~4.6.3"
   },
   "keywords": [],

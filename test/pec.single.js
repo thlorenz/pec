@@ -55,7 +55,7 @@ test('\npreflop:single: pair vs. undercard and card match', function(t) {
   , [ 'JsJh', 'Js6h', 93 ]
   , [ 'JsJh', 'Jc9c', 81 ]
   , [ 'JsJh', 'Jc6c', 85 ]
-  , [ '6s6h', '6c3c', 79 ]
+  , [ '6s6h', '6c3c', 83 ]
   ].forEach(x => checkSingle.apply(null, [ t ].concat(x)))
   t.end()
 })
