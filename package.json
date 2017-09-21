@@ -5,7 +5,8 @@
   "main": "pec.js",
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done",
-    "demo": "budo ./examples/webworker.js"
+    "demo": "budo ./examples/webworker.js",
+    "demo-board": "budo ./examples/webworker-board.js"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-const { raceRange } = require('./')
+const { raceRange, raceRangeForBoard } = require('./')
 
 function createMessage(win, loose, tie, iterations, combos, trackCombos) {
   // prefer numeric array message when possible
@@ -22,13 +22,24 @@ function Worker(hub) {
 const proto = Worker.prototype
 
 proto._onmessage = function _onmessage(e) {
-  const { stop = false, combo, range, runAll, times, repeat, trackCombos } = JSON.parse(e.data)
+  const {
+      stop = false
+    , combo
+    , range
+    , runAll
+    , times
+    , repeat
+    , trackCombos
+    , board = null
+  } = JSON.parse(e.data)
+
   this._stopped = stop
   if (stop) return
 
   this._combo = combo
   this._range = range
   this._trackCombos = trackCombos
+  this._board = board
 
   if (runAll) return this._runAll()
 
@@ -43,8 +54,11 @@ proto._onmessage = function _onmessage(e) {
 }
 
 proto._runAll = function _runAll() {
-  const { win, loose, tie, combos } =
-    raceRange(this._combo, this._range, null, this._trackCombos)
+  const hasBoard = this._board != null
+
+  const { win, loose, tie, combos } = hasBoard
+    ? raceRangeForBoard(this._combo, this._range, null, this._trackCombos, this._board)
+    : raceRange(this._combo, this._range, null, this._trackCombos)
   const msg = createMessage(win, loose, tie, 1, combos, this._trackCombos)
   this._hub.postMessage(msg)
 }
@@ -63,13 +77,18 @@ proto._run = function _run() {
   const self = this
   const combo = this._combo
   const range = this._range
+  const board = this._board
+  const hasBoard = board != null
   var i = 0
   function dorun() {
-    const { win, loose, tie, combos } = raceRange(combo, range, self._times, self._trackCombos)
+    const { win, loose, tie, combos } = hasBoard
+      ? raceRangeForBoard(combo, range, self._times, self._trackCombos, board)
+      : raceRange(combo, range, self._times, self._trackCombos)
+
     // Did we get a new request and are handling that currently?
     // If so cancel (forget about) the current one.
     // Also if we got stopped entirely we are done.
-    if (self._stopped || combo !== self._combo || range !== self._range) return
+    if (self._stopped || combo !== self._combo || range !== self._range || board !== self._board) return
 
     // Otherwise update the data and send it up
     self._win += win

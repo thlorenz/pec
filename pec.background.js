@@ -30,20 +30,28 @@ class BackgroundWorker {
   * each time and `update` invoked until the `total` is reached
  * @param {Boolean} [trackCombos=false] if `true` the counts for each combos are tracked
   */
-  raceRange(combo, range, total, trackCombos) {
+  raceRange(combo, range, total, trackCombos, board) {
     this._trackCombos = !!trackCombos
     this._stopped = false
     const runAll = total == null
     if (runAll) {
-      this._worker.postMessage(JSON.stringify({ combo, range, runAll }))
+      const msg = JSON.stringify({ combo, range, runAll, trackCombos: this._trackCombos, board })
+      this._worker.postMessage(msg)
     } else {
       // let's do 100 at a time to come back with at least some result quickly
       // progress communication is a simple array with 3 elements which shouldn't add too much overload
       const times =  Math.min(total, 100)
       const repeat = Math.round(total / times)
-      this._worker.postMessage(
-        JSON.stringify({ combo, range, runAll: false, times, repeat, trackCombos: this._trackCombos })
-      )
+      const msg = JSON.stringify({
+          combo
+        , range
+        , runAll
+        , times
+        , repeat
+        , trackCombos: this._trackCombos
+        , board
+      })
+      this._worker.postMessage(msg)
     }
   }
 
