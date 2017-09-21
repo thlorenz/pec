@@ -223,6 +223,18 @@ function _raceCombosForBoard(combo1, combo2, times, hasBoard, boardCodes) {
   return _raceCodesForBoard(comboCodes1, comboCodes2, times, hasBoard, boardCodes)
 }
 
+/**
+ * Races two combos against each other.
+ *
+ * @name raceCombos
+ * @function
+ * @param {Array.<string>} combo1 first combo to race i.e. `[ 'As', 'Ad' ]`
+ * @param {Array.<string>} combo2 second combo to race i.e. `[ 'As', 'Ad' ]`
+ * @param {Number} [times=null] the number of times to race, if not supplied combos are races against all possible boards
+ * @param {Array.<string>}[board=null] omit for preflop, but provide for
+ * postflop to race against boards that just add a turn or river card to the given one
+ * @return count of how many times combo1 wins, looses or ties, i.e. `{ win, loose, tie }`
+ */
 function raceCombosForBoard(combo1, combo2, times, board) {
   const boardCodes = cardCodes(board)
   return _raceCombosForBoard(combo1, combo2, times, true, boardCodes)
@@ -256,6 +268,20 @@ function _raceRangeForBoard(combo, range, times, trackCombos, hasBoard, boardCod
 //
 // Race Range
 //
+/**
+ * Race the given combo vs. the given combo to count number of wins, losses and ties.
+ * The boards created for the race will include all cards of the given board.
+ *
+ * @name raceRange
+ * @function
+ * @param {Array.<string>} combo to race i.e. `[ 'As', 'Ad' ]`
+ * @param {Array.<Array.<string>>} range multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
+ * @param {Number} [times=null] the number of times to race, if not supplied combos are races against all possible boards
+ * @param {Boolean} [trackCombos=false] if `true` the counts for each combos are tracked
+ * @param {Array.<string>}[board=null] omit for preflop, but provide for
+ * postflop to race against boards that just add a turn or river card to the given one
+ * @return count of how many times the combo wins, looses or ties, i.e. `{ win, loose, tie }`
+ */
 function raceRangeForBoard(combo, range, times, trackCombos, board) {
   const boardCodes = cardCodes(board)
   return _raceRangeForBoard(combo, range, times, trackCombos, true, boardCodes)

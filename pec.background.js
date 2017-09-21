@@ -28,6 +28,8 @@ class BackgroundWorker {
   * @param {Array.<Array.<string>> range multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
   * @param {Number} total the total number of times to race, `100` are processed
   * each time and `update` invoked until the `total` is reached
+  * @param {Array.<string>} [board=null] if supplied the range will be raced
+  * against subsets boards that include all cards of the given board
  * @param {Boolean} [trackCombos=false] if `true` the counts for each combos are tracked
   */
   raceRange(combo, range, total, trackCombos, board) {

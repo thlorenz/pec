@@ -46,6 +46,8 @@ You can launch the web worker via `npm install && npm run demo`.
 -   `combo` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** to race i.e. `[ 'As', 'Ad' ]`
 -   `total` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the total number of times to race, `100` are processed
     each time and `update` invoked until the `total` is reached
+-   `board` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>?** if supplied the range will be raced
+    against subsets boards that include all cards of the given board (optional, default `null`)
 -   `trackCombos` **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** if `true` the counts for each combos are tracked (optional, default `false`)
 
 ### BackgroundWorker.stop
@@ -63,6 +65,18 @@ under the hood to process _race_ requests.
 
 Returns **BackgroundWorker** backgroundWorker
 
+### raceCodesForBoard
+
+Same as @see raceCombosForBoard, except that the combo cards are given
+as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
+
+**Parameters**
+
+-   `combo1`  
+-   `combo2`  
+-   `times`  
+-   `board`  
+
 ### raceCodes
 
 Same as @see raceCombos, except that the combo cards are given
@@ -73,6 +87,19 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 -   `combo1`  
 -   `combo2`  
 -   `times`  
+
+### raceRangeCodesForBoard
+
+Same as @see raceRangeForBoard, except that the combo, range cards and board are given
+as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
+
+**Parameters**
+
+-   `comboCodes`  
+-   `rangeCodes`  
+-   `times`  
+-   `trackCombos`  
+-   `boardCodes`  
 
 ### raceRangeCodes
 
@@ -95,8 +122,38 @@ Races two combos against each other.
 -   `combo1` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** first combo to race i.e. `[ 'As', 'Ad' ]`
 -   `combo2` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** second combo to race i.e. `[ 'As', 'Ad' ]`
 -   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the number of times to race, if not supplied combos are races against all possible boards (optional, default `null`)
+-   `board` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>?** omit for preflop, but provide for
+    postflop to race against boards that just add a turn or river card to the given one (optional, default `null`)
 
 Returns **any** count of how many times combo1 wins, looses or ties, i.e. `{ win, loose, tie }`
+
+### raceCombos
+
+Races two combos against each other.
+
+**Parameters**
+
+-   `combo1` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** first combo to race i.e. `[ 'As', 'Ad' ]`
+-   `combo2` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** second combo to race i.e. `[ 'As', 'Ad' ]`
+-   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the number of times to race, if not supplied combos are races against all possible boards (optional, default `null`)
+
+Returns **any** count of how many times combo1 wins, looses or ties, i.e. `{ win, loose, tie }`
+
+### raceRange
+
+Race the given combo vs. the given combo to count number of wins, losses and ties.
+The boards created for the race will include all cards of the given board.
+
+**Parameters**
+
+-   `combo` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** to race i.e. `[ 'As', 'Ad' ]`
+-   `range` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>>** multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
+-   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the number of times to race, if not supplied combos are races against all possible boards (optional, default `null`)
+-   `trackCombos` **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** if `true` the counts for each combos are tracked (optional, default `false`)
+-   `board` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>?** omit for preflop, but provide for
+    postflop to race against boards that just add a turn or river card to the given one (optional, default `null`)
+
+Returns **any** count of how many times the combo wins, looses or ties, i.e. `{ win, loose, tie }`
 
 ### raceRange
 
@@ -105,6 +162,7 @@ Race the given combo vs. the given combo to count number of wins, losses and tie
 **Parameters**
 
 -   `combo` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** to race i.e. `[ 'As', 'Ad' ]`
+-   `range` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>>** multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
 -   `times` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the number of times to race, if not supplied combos are races against all possible boards (optional, default `null`)
 -   `trackCombos` **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** if `true` the counts for each combos are tracked (optional, default `false`)
 
