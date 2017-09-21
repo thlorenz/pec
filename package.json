@@ -1,6 +1,6 @@
 {
   "name": "pec",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "BetterPoker equity calculator. Compares two combos or one combo against a range.",
   "main": "pec.js",
   "scripts": {
