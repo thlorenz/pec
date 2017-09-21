@@ -46,9 +46,9 @@ You can launch the web worker via `npm install && npm run demo`.
 -   `combo` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** to race i.e. `[ 'As', 'Ad' ]`
 -   `total` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the total number of times to race, `100` are processed
     each time and `update` invoked until the `total` is reached
+-   `trackCombos` **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** if `true` the counts for each combos are tracked (optional, default `false`)
 -   `board` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>?** if supplied the range will be raced
     against subsets boards that include all cards of the given board (optional, default `null`)
--   `trackCombos` **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** if `true` the counts for each combos are tracked (optional, default `false`)
 
 ### BackgroundWorker.stop
 
@@ -113,7 +113,7 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 -   `times`  
 -   `trackCombos`  
 
-### raceCombos
+### raceCombosForBoard
 
 Races two combos against each other.
 
@@ -139,7 +139,7 @@ Races two combos against each other.
 
 Returns **any** count of how many times combo1 wins, looses or ties, i.e. `{ win, loose, tie }`
 
-### raceRange
+### raceRangeForBoard
 
 Race the given combo vs. the given combo to count number of wins, losses and ties.
 The boards created for the race will include all cards of the given board.

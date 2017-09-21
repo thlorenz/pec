@@ -226,7 +226,7 @@ function _raceCombosForBoard(combo1, combo2, times, hasBoard, boardCodes) {
 /**
  * Races two combos against each other.
  *
- * @name raceCombos
+ * @name raceCombosForBoard
  * @function
  * @param {Array.<string>} combo1 first combo to race i.e. `[ 'As', 'Ad' ]`
  * @param {Array.<string>} combo2 second combo to race i.e. `[ 'As', 'Ad' ]`
@@ -272,7 +272,7 @@ function _raceRangeForBoard(combo, range, times, trackCombos, hasBoard, boardCod
  * Race the given combo vs. the given combo to count number of wins, losses and ties.
  * The boards created for the race will include all cards of the given board.
  *
- * @name raceRange
+ * @name raceRangeForBoard
  * @function
  * @param {Array.<string>} combo to race i.e. `[ 'As', 'Ad' ]`
  * @param {Array.<Array.<string>>} range multiple combos to raise against it, i.e. `[ [ 'Ks', 'Kd' ], [ 'Qs', 'Qd' ] ]`
