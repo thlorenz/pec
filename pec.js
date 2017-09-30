@@ -7,7 +7,9 @@ const EMPTY_ARRAY = []
 
 function stringifyTrackedCardComboKeys(codedMap) {
   const map = new Map()
-  for (const [ k, v ] of codedMap) {
+  for (const code of codedMap) {
+    const k = code[0]
+    const v = code[1]
     const s1 = stringifyCardCode(k[0])
     const s2 = stringifyCardCode(k[1])
     map.set(s1 + s2, v)
@@ -328,7 +330,11 @@ function rates({ win, loose, tie, combos }) {
   if (combos == null) return { winRate, looseRate, tieRate }
 
   const map = new Map()
-  for (const combo of combos) map.set(combo[0], rates(combo[1]))
+  for (const combo of combos) {
+    const k = combo[0]
+    const v = combo[1]
+    map.set(k, rates(v))
+  }
   return { winRate, looseRate, tieRate, combos: map }
 }
 
