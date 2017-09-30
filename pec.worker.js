@@ -64,7 +64,10 @@ proto._runAll = function _runAll() {
 }
 
 proto._updateCombos = function _updateCombos(combos) {
-  for (const [ k, v ] of combos) {
+  for (const combo of combos) {
+    const k = combo[0]
+    const v = combo[1]
+
     if (!this._combos.has(k)) this._combos.set(k, { win: 0, loose: 0, tie: 0 })
     const val = this._combos.get(k)
     val.win += v.win

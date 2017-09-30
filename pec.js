@@ -328,7 +328,7 @@ function rates({ win, loose, tie, combos }) {
   if (combos == null) return { winRate, looseRate, tieRate }
 
   const map = new Map()
-  for (const [ k, v ] of combos) map.set(k, rates(v))
+  for (const combo of combos) map.set(combo[0], rates(combo[1]))
   return { winRate, looseRate, tieRate, combos: map }
 }
 
