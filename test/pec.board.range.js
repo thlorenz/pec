@@ -1,3 +1,5 @@
+'use strict'
+
 const test = require('tape')
 const { rateComboVsRangeForBoard, expandRange } = require('./util/util')
 const { cardCodes } = require('phe')

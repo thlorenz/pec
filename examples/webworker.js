@@ -1,3 +1,5 @@
+'use strict'
+
 const { rates } = require('../')
 const backgroundWorker = require('../pec.background')
 const { expandRange, arryifyCombo } = require('../test/util/util')

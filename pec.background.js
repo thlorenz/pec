@@ -1,3 +1,5 @@
+'use strict'
+
 const work = require('webworkify')
 const workerBlob = require('./pec.worker')
 const stopMsg = JSON.stringify({ stop: true })

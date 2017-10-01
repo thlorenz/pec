@@ -1,3 +1,5 @@
+'use strict'
+
 const { raceRange, raceRangeForBoard } = require('./')
 
 function createMessage(win, loose, tie, iterations, combos, trackCombos) {

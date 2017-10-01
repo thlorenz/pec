@@ -1,3 +1,5 @@
+'use strict'
+
 const { raceRange, rates } = require('../')
 
 const combo = [ 'Jh', 'Js' ]

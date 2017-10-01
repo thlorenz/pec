@@ -1,3 +1,5 @@
+'use strict'
+
 const { cardCodes, stringifyCardCode } = require('phe')
 const evaluate7Cards = require('phe/lib/evaluator7')
 

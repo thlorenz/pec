@@ -1,3 +1,5 @@
+'use strict'
+
 const test = require('tape')
 const { rateComboVsRangeForBoard } = require('./util/util')
 const spok = require('spok')
