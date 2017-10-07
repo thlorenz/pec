@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/thlorenz/pec",
   "dependencies": {
-    "phe": "~0.3.1",
+    "phe": "~0.4.1",
     "webworkify": "~1.4.0"
   },
   "devDependencies": {
