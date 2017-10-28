@@ -1,16 +1,17 @@
 'use strict'
 
 const work = require('webworkify')
+const now = Date.now
 const workerBlob = require('./pec.worker')
 const stopMsg = JSON.stringify({ stop: true })
 
 function readMessage(msg, trackCombos) {
   if (!trackCombos) {
-    const [ win, loose, tie, iterations ] = msg
-    return { win, loose, tie, iterations }
+    const [ win, loose, tie, iterations, uid ] = msg
+    return { win, loose, tie, iterations, uid }
   }
-  const { win, loose, tie, iterations, combos } = msg
-  return { win, loose, tie, iterations, combos: new Map(combos) }
+  const { win, loose, tie, iterations, combos, uid } = msg
+  return { win, loose, tie, iterations, combos: new Map(combos), uid }
 }
 
 class BackgroundWorker {
@@ -33,13 +34,16 @@ class BackgroundWorker {
   * @param {Boolean} [trackCombos=false] if `true` the counts for each combos are tracked
   * @param {Array.<string>} [board=null] if supplied the range will be raced
   * against subsets boards that include all cards of the given board
+  * @return {Number} the uid generated to identify this background job,
+  * the same uid will be included in the message the result to identify it with the job
   */
   raceRange(combo, range, total, trackCombos, board) {
     this._trackCombos = !!trackCombos
     this._stopped = false
     const runAll = total == null
+    const uid = now()
     if (runAll) {
-      const msg = JSON.stringify({ combo, range, runAll, trackCombos: this._trackCombos, board })
+      const msg = JSON.stringify({ combo, range, runAll, trackCombos: this._trackCombos, board, uid })
       this._worker.postMessage(msg)
     } else {
       // let's do 100 at a time to come back with at least some result quickly
@@ -54,9 +58,11 @@ class BackgroundWorker {
         , repeat
         , trackCombos: this._trackCombos
         , board
+        , uid
       })
       this._worker.postMessage(msg)
     }
+    return uid
   }
 
   /**
@@ -84,7 +90,7 @@ class BackgroundWorker {
  *
  * @name createBackgroundWorker
  * @function
- * @param {funcion} update will be called with updates: `{ win, loose, tie, iterations }`
+ * @param {funcion} update will be called with updates: `{ win, loose, tie, iterations, uid }`
  * @return {BackgroundWorker} backgroundWorker
  */
 module.exports = function createBackgroundWorker(update) {

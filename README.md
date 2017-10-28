@@ -1,4 +1,4 @@
-# pec [![build status](https://secure.travis-ci.org/thlorenz/pec.png)](http://travis-ci.org/thlorenz/pec)
+# pec [![build status](https://secure.travis-ci.org/thlorenz/pec.svg)](http://travis-ci.org/thlorenz/pec)
 
 Poker equity calculator. Compares two combos or one combo against a range to compute winning equity.
 
@@ -50,6 +50,9 @@ You can launch the web worker via `npm install && npm run demo`.
 -   `board` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>?** if supplied the range will be raced
     against subsets boards that include all cards of the given board (optional, default `null`)
 
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the uid generated to identify this background job,
+the same uid will be included in the message the result to identify it with the job
+
 ### BackgroundWorker.stop
 
 Stops any races in progress.
@@ -61,7 +64,7 @@ under the hood to process _race_ requests.
 
 **Parameters**
 
--   `update` **funcion** will be called with updates: `{ win, loose, tie, iterations }`
+-   `update` **funcion** will be called with updates: `{ win, loose, tie, iterations, uid }`
 
 Returns **BackgroundWorker** backgroundWorker
 
