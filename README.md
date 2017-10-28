@@ -1,4 +1,4 @@
-# pec [![build status](https://secure.travis-ci.org/thlorenz/pec.png)](http://travis-ci.org/thlorenz/pec)
+# pec [![build status](https://secure.travis-ci.org/thlorenz/pec.svg)](http://travis-ci.org/thlorenz/pec)
 
 Poker equity calculator. Compares two combos or one combo against a range to compute winning equity.
 
@@ -72,10 +72,10 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`  
--   `combo2`  
--   `times`  
--   `board`  
+-   `combo1`
+-   `combo2`
+-   `times`
+-   `board`
 
 ### raceCodes
 
@@ -84,9 +84,9 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`  
--   `combo2`  
--   `times`  
+-   `combo1`
+-   `combo2`
+-   `times`
 
 ### raceRangeCodesForBoard
 
@@ -95,11 +95,11 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `comboCodes`  
--   `rangeCodes`  
--   `times`  
--   `trackCombos`  
--   `boardCodes`  
+-   `comboCodes`
+-   `rangeCodes`
+-   `times`
+-   `trackCombos`
+-   `boardCodes`
 
 ### raceRangeCodes
 
@@ -108,10 +108,10 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`  
--   `range`  
--   `times`  
--   `trackCombos`  
+-   `combo1`
+-   `range`
+-   `times`
+-   `trackCombos`
 
 ### raceCombosForBoard
 
@@ -175,7 +175,7 @@ in percent.
 
 **Parameters**
 
--   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)**
     -   `$0.win` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of wins
     -   `$0.loose` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of losses
     -   `$0.tie` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of ties

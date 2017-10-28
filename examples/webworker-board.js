@@ -3,10 +3,11 @@
 const { rates } = require('../')
 const backgroundWorker = require('../pec.background')
 const { expandRange, arryifyCombo } = require('../test/util/util')
+const assert = require('assert')
 
 const worker = backgroundWorker(onupdate)
 
-const range = 'TT+, AK+, AQs+'
+const range = 'QQ+, AK+, AQs+'
 const combo = 'JhJs'
 const expandedRange = expandRange(range)
 const expandedCombo = arryifyCombo(combo)
@@ -16,9 +17,10 @@ const div = document.createElement('div')
 document.body.append(div)
 
 const trackCombos = false
-worker.raceRange(expandedCombo, expandedRange, 1E6, trackCombos, board)
+const raceId = worker.raceRange(expandedCombo, expandedRange, 1E6, trackCombos, board)
 
-function onupdate({ win, loose, tie, iterations, combos }) {
+function onupdate({ win, loose, tie, iterations, combos, uid }) {
+  assert.equal(raceId, uid, 'uid in response needs to match id of initiated race')
   const { winRate, looseRate, tieRate } = rates({
       win
     , loose

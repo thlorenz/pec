@@ -1,6 +1,7 @@
 'use strict'
 
 const { rates } = require('../')
+const assert = require('assert')
 const backgroundWorker = require('../pec.background')
 const { expandRange, arryifyCombo } = require('../test/util/util')
 
@@ -15,16 +16,16 @@ const div = document.createElement('div')
 document.body.append(div)
 
 const trackCombos = true
-worker.raceRange(expandedCombo, expandedRange, 1E6, trackCombos)
+const raceId = worker.raceRange(expandedCombo, expandedRange, 1E6, trackCombos)
 
-function onupdate({ win, loose, tie, iterations, combos }) {
+function onupdate({ win, loose, tie, iterations, combos, uid }) {
+  assert.equal(raceId, uid, 'uid in response needs to match id of initiated race')
   const { winRate, looseRate, tieRate, combos: comboRates } = rates({
       win
     , loose
     , tie
     , combos
   })
-  console.log(comboRates)
 
   var comboRows = ''
   for (const [ k, { winRate, looseRate, tieRate } ] of comboRates) {

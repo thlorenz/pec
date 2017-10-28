@@ -2,15 +2,16 @@
 
 const { raceRange, raceRangeForBoard } = require('./')
 
-function createMessage(win, loose, tie, iterations, combos, trackCombos) {
+function createMessage(win, loose, tie, iterations, combos, trackCombos, uid) {
   // prefer numeric array message when possible
-  if (!trackCombos) return [ win, loose, tie, iterations ]
+  if (!trackCombos) return [ win, loose, tie, iterations, uid ]
   return {
       win: win
     , loose: loose
     , tie: tie
     , iterations
     , combos: Array.from(combos)
+    , uid
   }
 }
 
@@ -33,6 +34,7 @@ proto._onmessage = function _onmessage(e) {
     , repeat
     , trackCombos
     , board = null
+    , uid
   } = JSON.parse(e.data)
 
   this._stopped = stop
@@ -42,6 +44,7 @@ proto._onmessage = function _onmessage(e) {
   this._range = range
   this._trackCombos = trackCombos
   this._board = board
+  this._uid = uid
 
   if (runAll) return this._runAll()
 
@@ -61,7 +64,7 @@ proto._runAll = function _runAll() {
   const { win, loose, tie, combos } = hasBoard
     ? raceRangeForBoard(this._combo, this._range, null, this._trackCombos, this._board)
     : raceRange(this._combo, this._range, null, this._trackCombos)
-  const msg = createMessage(win, loose, tie, 1, combos, this._trackCombos)
+  const msg = createMessage(win, loose, tie, 1, combos, this._trackCombos, this._uid)
   this._hub.postMessage(msg)
 }
 
@@ -108,6 +111,7 @@ proto._run = function _run() {
       , i * self._times
       , self._combos
       , self._trackCombos
+      , self._uid
     )
     self._hub.postMessage(msg)
 
