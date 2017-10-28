@@ -50,6 +50,9 @@ You can launch the web worker via `npm install && npm run demo`.
 -   `board` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>?** if supplied the range will be raced
     against subsets boards that include all cards of the given board (optional, default `null`)
 
+Returns **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the uid generated to identify this background job,
+the same uid will be included in the message the result to identify it with the job
+
 ### BackgroundWorker.stop
 
 Stops any races in progress.
@@ -61,7 +64,7 @@ under the hood to process _race_ requests.
 
 **Parameters**
 
--   `update` **funcion** will be called with updates: `{ win, loose, tie, iterations }`
+-   `update` **funcion** will be called with updates: `{ win, loose, tie, iterations, uid }`
 
 Returns **BackgroundWorker** backgroundWorker
 
@@ -72,10 +75,10 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`
--   `combo2`
--   `times`
--   `board`
+-   `combo1`  
+-   `combo2`  
+-   `times`  
+-   `board`  
 
 ### raceCodes
 
@@ -84,9 +87,9 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`
--   `combo2`
--   `times`
+-   `combo1`  
+-   `combo2`  
+-   `times`  
 
 ### raceRangeCodesForBoard
 
@@ -95,11 +98,11 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `comboCodes`
--   `rangeCodes`
--   `times`
--   `trackCombos`
--   `boardCodes`
+-   `comboCodes`  
+-   `rangeCodes`  
+-   `times`  
+-   `trackCombos`  
+-   `boardCodes`  
 
 ### raceRangeCodes
 
@@ -108,10 +111,10 @@ as their codes obtained via [phe](https://github.com/thlorenz/phe) `cardCodes`.
 
 **Parameters**
 
--   `combo1`
--   `range`
--   `times`
--   `trackCombos`
+-   `combo1`  
+-   `range`  
+-   `times`  
+-   `trackCombos`  
 
 ### raceCombosForBoard
 
@@ -175,7 +178,7 @@ in percent.
 
 **Parameters**
 
--   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)**
+-   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `$0.win` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of wins
     -   `$0.loose` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of losses
     -   `$0.tie` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** number of ties
